@@ -1,12 +1,21 @@
 package id.ac.ui.cs.advprog.eshop.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum PaymentStatus {
-    SUCCESS,
-    REJECTED;
+    SUCCESS("SUCCESS"),
+    REJECTED("REJECTED");
+
+    private final String value;
+
+    PaymentStatus(String value) {
+        this.value = value;
+    }
 
     public static boolean contains(String value) {
         for (PaymentStatus status : PaymentStatus.values()) {
-            if (status.name().equals(value)) {
+            if (status.getValue().equals(value)) {
                 return true;
             }
         }

@@ -10,6 +10,8 @@ import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 @Getter
 @Setter
 public class Payment {
+    private static final String INVALID_STATUS_MESSAGE = "Invalid payment status";
+
     private String id;
     private String method;
     private String status;
@@ -23,9 +25,13 @@ public class Payment {
     }
 
     public void setStatus(String status) {
-        if (!PaymentStatus.contains(status)) {
-            throw new IllegalArgumentException();
-        }
+        validateStatus(status);
         this.status = status;
+    }
+
+    private void validateStatus(String status) {
+        if (!PaymentStatus.contains(status)) {
+            throw new IllegalArgumentException(INVALID_STATUS_MESSAGE);
+        }
     }
 }
