@@ -11,7 +11,7 @@ import java.util.Map;
 @Repository
 public class PaymentRepository {
 
-    private Map<String, Payment> paymentMap = new HashMap<>();
+    private final Map<String, Payment> paymentMap = new HashMap<>();
 
     public Payment save(Payment payment) {
         paymentMap.put(payment.getId(), payment);
