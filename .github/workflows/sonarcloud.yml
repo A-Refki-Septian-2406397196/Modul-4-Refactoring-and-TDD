@@ -1,0 +1,46 @@
+name: SonarCloud
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  sonarcloud:
+    runs-on: ubuntu-22.04
+    # biar PR dari fork tidak error karena secrets tidak kebawa
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+          cache: "gradle"
+      
+      - name: Prepare Gradle wrapper
+        run: |
+          ls -la
+          ls -la gradlew || true
+          chmod +x gradlew || true
+          sed -i 's/\r$//' gradlew || true
+          bash ./gradlew --version
+
+      - name: Test + coverage
+        run: bash ./gradlew test jacocoTestReport
+
+      - name: SonarCloud scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKENS }}
+        run: |
+          bash ./gradlew sonar \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.organization=a-refki-septian-2406397196 \
+            -Dsonar.projectKey=A-Refki-Septian-2406397196_Modul-1-Coding-Standards \
+            -Dsonar.token=$SONAR_TOKEN
