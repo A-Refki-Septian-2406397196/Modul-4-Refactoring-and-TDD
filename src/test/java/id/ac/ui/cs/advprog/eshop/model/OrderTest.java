@@ -10,6 +10,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+
 public class OrderTest {
     
     private List<Product> products;
@@ -72,10 +74,9 @@ public class OrderTest {
             this.products,
             1708560000L,
             "Safira Sudrajat",
-            "SUCCESS"
+            OrderStatus.SUCCESS.getValue()
         );
-
-        assertEquals("SUCCESS", order.getStatus());
+        assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
     }
 
     @Test
